@@ -1,0 +1,7 @@
+src/_pycache_
+src/log
+src/logs
+src/.vscode
+
+*.meta
+*.npy
