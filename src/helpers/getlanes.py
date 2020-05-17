@@ -1,3 +1,5 @@
+#Based on Sentdex's tutorials
+
 import numpy as np
 from numpy import ones,vstack
 from numpy.linalg import lstsq
