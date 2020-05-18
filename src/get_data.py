@@ -59,10 +59,11 @@ def get_model_data(file_name, screen_region):
         #Grab the screen in the given region, get the keys and 
         #add it to the training data and then update the time
         screen = grab_screen(region=screen_region)
+        output_keys = keys_to_output(key_check())
+        
         screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
         #screen = roi(screen, [vertices])
         screen = cv2.resize(screen, (160,120))
-        output_keys = keys_to_output(key_check())
         training_data.append([screen, output_keys])
         
         print('Frame took {} seconds'.format(time.time()-last_time))
