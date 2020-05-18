@@ -14,8 +14,3 @@ for i in range(len(train_data)):
 cv2.imshow('window', screen)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-
-A = [1,2,3]
-print(A[:5])
-
-
