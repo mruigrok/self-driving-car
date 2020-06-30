@@ -1,0 +1,2 @@
+model_checkpoint_path: "C:\\PythonScripts\\self-driving-car\\src\\pygta5-car-0.001-googlenet-color-5-epochs.model"
+all_model_checkpoint_paths: "C:\\PythonScripts\\self-driving-car\\src\\pygta5-car-0.001-googlenet-color-5-epochs.model"

@@ -28,7 +28,6 @@ def balance_data(file_name):
         no_keys = []
 
         print('Training length: {}'.format(len(train_data)))
-        print(type(a))
 
         for data in train_data:
             img = data[0]
@@ -59,7 +58,7 @@ def balance_data(file_name):
         #NN is not looking at the previous frame for training so shuffle the training
         #data so it doesn't bias the training data
         shuffle(final_data)
-       
+
         balanced_data_filename = file_name.split('.npy')[0] + '_balanced.npy'
         np.save(balanced_data_filename, final_data)
 

@@ -3,5 +3,9 @@ src/log
 src/logs
 src/.vscode
 
+*.data-00000-of-00001
+*.cpython
+*.pyc
 *.meta
 *.npy
+*.index

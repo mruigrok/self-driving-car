@@ -1,33 +1,39 @@
 import cv2
 import numpy as np
 import random
+import sys
 import time
 from helpers.grabscreen import grab_screen
 from helpers.getkeys import key_check
 from helpers.directkeys import PressKey, ReleaseKey, W, A, S, D
-from models.alexnet import alexnet_2
+from models.alexnet import inception_v3 as googlenet
 
 #Model type for formatting the saved model
-type_model = 'alexnetv2'
+type_model = 'googlenet-color'
 
-WIDTH = 160
-HEIGHT = 120
+WIDTH = 200
+HEIGHT = 100
 LR = 1e-3
 EPOCHS = 5
 MODEL_NAME = 'pygta5-car-{}-{}-{}-epochs.model'.format(LR, type_model, EPOCHS)
 
-#Possible key press combinations
-w = [1,0,0,0,0,0,0,0,0]
-s = [0,1,0,0,0,0,0,0,0]
-a = [0,0,1,0,0,0,0,0,0]
-d = [0,0,0,1,0,0,0,0,0]
-wa = [0,0,0,0,1,0,0,0,0]
-wd = [0,0,0,0,0,1,0,0,0]
-sa = [0,0,0,0,0,0,1,0,0]
-sd = [0,0,0,0,0,0,0,1,0]
-nk = [0,0,0,0,0,0,0,0,0]
+#screen region
+region = (0,40,800,640)
 
-#Key presses
+#Possible key press combinations
+key_map = {
+    "W" : [1,0,0,0,0,0,0,0,0],
+    "S" : [0,1,0,0,0,0,0,0,0],
+    "A" : [0,0,1,0,0,0,0,0,0],
+    "D" : [0,0,0,1,0,0,0,0,0],
+    "WA" : [0,0,0,0,1,0,0,0,0],
+    "WD" : [0,0,0,0,0,1,0,0,0],
+    "SA" : [0,0,0,0,0,0,1,0,0],
+    "SD" : [0,0,0,0,0,0,0,1,0],
+    "NK" : [0,0,0,0,0,0,0,0,1]
+}
+
+#Key press functions
 def straight():
     PressKey(W)
     ReleaseKey(A)
@@ -86,64 +92,75 @@ def no_keys():
     ReleaseKey(S)
     ReleaseKey(D)
 
-def countdown():
-    for i in range(0,3,-1):
+def countdown(seconds):
+    for i in range(0,seconds)[::-1]:
         print(i+1)
         time.sleep(1)
         
-#Load the model
-model = alexnet_2(WIDTH, HEIGHT, LR, output=9)
-model.load(MODEL_NAME)
 
-def run():
-    countdown()
-    last_time = time.time()
+def run(screen_region):
+    print("Getting ready to test the model, loading model")
+    time.sleep(1)
+    #Load the model
+    try:
+        model = googlenet(WIDTH, HEIGHT, 3, LR, output=9, model_name=MODEL_NAME)
+        model.load(MODEL_NAME)
+    except Exception as e:
+        print(str(e))
+        print("Can't find the model, exiting........")
+        exit()
+
+    countdown(3)
+    loop_time = time.time()
+    done = False
     paused = False
 
-    while True:
+    while not done:
         if not paused:
-            screen = grab_screen(region=(0,40,800,640))
-            screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+            screen = grab_screen(screen_region)
+            #screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
             screen = cv2.resize(screen, (HEIGHT,WIDTH))
-            print('Frame took {} seconds'.format(time.time()-last_time))
-            last_time = time.time()
+            print('Frame took {} seconds'.format(time.time()-loop_time))
+            loop_time = time.time()
 
             #Get the model prediction from the model
-            prediction = model.predict([screen.reshape(WIDTH,HEIGHT,1)])[0]
+            prediction = model.predict([screen.reshape(WIDTH,HEIGHT,3)])[0]
             moves = list(np.around(prediction))
             print(moves, prediction)
 
-            if moves == w:
+            if moves == key_map["W"]:
                 straight()
-            elif moves == s:
+            elif moves == key_map["S"]:
                 reverse()
-            elif moves == a:
+            elif moves == key_map["A"]:
                 left()
-            elif moves == d:
+            elif moves == key_map["D"]:
                 right()
-            elif moves == wa:
+            elif moves == key_map["WA"]:
                 straight_left()
-            elif moves == wd:
+            elif moves == key_map["WD"]:
                 straight_right()
-            elif moves == sd:
+            elif moves == key_map["SD"]:
                 reverse_right()
-            elif moves == sa:
+            elif moves == key_map["SA"]:
                 reverse_right()
-            elif moves == nk:
+            elif moves == key_map["NK"]:
                 no_keys()
 
-        #To pause and unpause the game use 'Z'        
+        #To pause and unpause the game use 'P'        
         keys = key_check()
-        if 'Z' in keys:
+        if 'P' in keys:
             if paused:
                 paused = False
             else:
                 paused = True
-                ReleaseKey(A)
-                ReleaseKey(W)
-                ReleaseKey(D)     
-                
+                no_keys()
+                response = input("Would you like to exit? 'Y' to exit")
+                if response == 'y' or response == 'Y':
+                    done = True
+                else:
+                    print('Continue')   
             time.sleep(1)
 
 if __name__ == "__main__":
-    run()
+    run(region)
