@@ -72,6 +72,7 @@ def get_model_data(screen_region, start_val, roi=True):
         screen = grab_screen(region=screen_region)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     
         #Focus on the road and less on surroundings, then re-size, re-colour and save to data
         if roi == True:
@@ -83,12 +84,17 @@ def get_model_data(screen_region, start_val, roi=True):
 =======
 =======
 >>>>>>> 19dcb836d3bfe2fea430c1e9be46d877818eb7de
+=======
+>>>>>>> 19dcb836d3bfe2fea430c1e9be46d877818eb7de
         output_keys = keys_to_output(key_check())
         
         screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
         #screen = roi(screen, [vertices])
         screen = cv2.resize(screen, (160,120))
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 19dcb836d3bfe2fea430c1e9be46d877818eb7de
+=======
 >>>>>>> 19dcb836d3bfe2fea430c1e9be46d877818eb7de
 =======
 >>>>>>> 19dcb836d3bfe2fea430c1e9be46d877818eb7de

@@ -13,9 +13,12 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 19dcb836d3bfe2fea430c1e9be46d877818eb7de
 =======
 >>>>>>> 19dcb836d3bfe2fea430c1e9be46d877818eb7de
 =======
