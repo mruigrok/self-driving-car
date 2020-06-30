@@ -70,10 +70,7 @@ def get_model_data(screen_region, start_val, roi=True):
         #Grab the screen in the given region, get the keys and 
         #add it to the training data and then update the time
         screen = grab_screen(region=screen_region)
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    
+
         #Focus on the road and less on surroundings, then re-size, re-colour and save to data
         if roi == True:
             screen = screen[200:500, 100:700]
@@ -81,23 +78,11 @@ def get_model_data(screen_region, start_val, roi=True):
         screen = cv2.resize(screen, (HEIGHT,WIDTH))
         screen = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
         output_keys = keys_to_output(key_check())
-=======
-=======
->>>>>>> 19dcb836d3bfe2fea430c1e9be46d877818eb7de
-=======
->>>>>>> 19dcb836d3bfe2fea430c1e9be46d877818eb7de
-        output_keys = keys_to_output(key_check())
+
         
         screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
         #screen = roi(screen, [vertices])
         screen = cv2.resize(screen, (160,120))
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 19dcb836d3bfe2fea430c1e9be46d877818eb7de
-=======
->>>>>>> 19dcb836d3bfe2fea430c1e9be46d877818eb7de
-=======
->>>>>>> 19dcb836d3bfe2fea430c1e9be46d877818eb7de
         training_data.append([screen, output_keys])
         
         print('Frame took {} seconds'.format(time.time()-loop_time))
